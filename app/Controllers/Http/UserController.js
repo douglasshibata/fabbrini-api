@@ -35,6 +35,11 @@ class UserController {
           .status(400)
           .send({ message: { error: 'CPF Já Cadastrado' } })
       }
+      if(/\d/.test(data.nome)){
+        return response
+        .status(400)
+        .send({ message: { error: 'Nome não pode conter números' } })
+      }
       schema
       .is().min(8)                                    // Minimum length 8
       .is().max(100)                                  // Maximum length 100
@@ -48,7 +53,7 @@ class UserController {
         return response
         .status(400)
         .send({ message: { error: 'Senha Fraca, deve ter no mínimo 8 caracteres tem que ter no mínimo 1 letra Maiuscula Dois Digitos Sem espaço' } })
-      }
+      }     
       const user = await User.create(data);
   
       return user;  
@@ -94,13 +99,13 @@ class UserController {
         'ativo',
         'ehMedico',
       ])
-      const passwordCheck = await Hash.verify(data.password, user.password)
+    //   const passwordCheck = await Hash.verify(data.password, user.password)
       
-    if (!passwordCheck) {
-      return response
-        .status(400)
-        .send({ message: { error: 'Senha Incorreta' } })
-    }
+    // if (!passwordCheck) {
+    //   return response
+    //     .status(400)
+    //     .send({ message: { error: 'Senha Incorreta' } })
+    // }
   
       user.merge(data)
   
