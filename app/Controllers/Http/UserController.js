@@ -25,20 +25,25 @@ class UserController {
           .status(400)
           .send({ message: { error: 'CPF inválido' } })
       }
-      if (userEmailExists) {
-        return response
-          .status(400)
-          .send({ message: { error: 'Email Já Cadastrado' } })
-      }
       if (userCpfExists) {
         return response
           .status(400)
           .send({ message: { error: 'CPF Já Cadastrado' } })
       }
+      if (userEmailExists) {
+        return response
+          .status(400)
+          .send({ message: { error: 'Email Já Cadastrado' } })
+      }
       if(/\d/.test(data.nome)){
         return response
         .status(400)
         .send({ message: { error: 'Nome não pode conter números' } })
+      }
+      if(data.nome>2){
+        return response
+        .status(400)
+        .send({ message: { error: 'Nome não pode ter menos que 2 caracteres ' } })
       }
       schema
       .is().min(8)                                    // Minimum length 8
@@ -127,8 +132,14 @@ class UserController {
 
     await user.delete()
   } */
-  async login({request,auth}){
+  async login({request,auth,response}){
       const {cpfUser,password} = request.all();
+      const checaCPF = await User.findBy('cpfUser',cpfUser)
+      if(!checaCPF || checaCPF === null){
+        return response
+          .status(400)
+          .send({ message: { error: 'CPF não encontrado' } })
+      }
       const token = await auth.attempt(cpfUser,password);
       return token;
   }
