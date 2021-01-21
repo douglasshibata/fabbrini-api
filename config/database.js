@@ -30,7 +30,7 @@ module.exports = {
       password: Env.get('DB_PASSWORD', DATABASE_URL.password),
       database: Env.get('DB_DATABASE',  DATABASE_URL.pathname.substr(1)),
       options: {
-        useUnifiedTopology: true,
+        useUnifiedTopology: false,
         useNewUrlParser:true
         // replicaSet: Env.get('DB_REPLICA_SET', '')
         // ssl: Env.get('DB_SSL, '')
