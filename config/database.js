@@ -22,7 +22,7 @@ module.exports = {
 
   mongodb: {
     client: 'mongodb',
-    connectionString: Env.get('DB_CONNECTION_STRING', ''),
+    connectionString: Env.get('DB_CONNECTION_STRING',`${DATABASE_URL.hostname}://${DATABASE_URL.username}:${DATABASE_URL.password}@${DATABASE_URL.port}/${DATABASE_URL.pathname.substr(1)}?retryWrites=true&w=majority`),
     connection: {
       host: Env.get('DB_HOST', DATABASE_URL.hostname),
       port: Env.get('DB_PORT', DATABASE_URL.port),
@@ -30,7 +30,7 @@ module.exports = {
       password: Env.get('DB_PASSWORD', DATABASE_URL.password),
       database: Env.get('DB_DATABASE',  DATABASE_URL.pathname.substr(1)),
       options: {
-        useUnifiedTopology: false,
+        useUnifiedTopology: true,
         useNewUrlParser:true
         // replicaSet: Env.get('DB_REPLICA_SET', '')
         // ssl: Env.get('DB_SSL, '')
