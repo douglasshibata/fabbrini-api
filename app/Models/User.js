@@ -1,6 +1,8 @@
 'use strict'
 
-/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
+// /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
+// const Model = use('Model')
+/** @type {typeof import('lucid-mongo/src/LucidMongo/Model')} */
 const Model = use('Model')
 
 /** @type {import('@adonisjs/framework/src/Hash')} */
@@ -32,10 +34,10 @@ class User extends Model {
    * @return {Object}
    */
   tokens () {
-    return this.hasMany('App/Models/Token')
+    return this.morphMany('App/Models/Token','user_id','cpfUser')
   }
   agenda(){
-    return this.hasMany('App/Models/Agenda')
+    return this.morphMany('App/Models/Agenda')
   }
 }
 

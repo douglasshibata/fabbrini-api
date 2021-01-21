@@ -29,6 +29,6 @@ Route.put('/agenda/:id','AgendaController.update').middleware("auth:jwt")//Edita
 Route.get('/agenda','AgendaController.index').middleware('auth:jwt')//Ver toda a agenda
 Route.get('/perfil','UserController.perfil').middleware('auth:jwt')//Mostra o perfil do usuário
 Route.post('/agenda/:id/prontuario','ProntuarioController.store').middleware('auth:jwt')//Criando prontuário
-Route.get("/dadosPaciente",'UserController.dadosPaciente').middleware('auth:jwt');//mostrar lista de pacientes
+//Route.get("/dadosPaciente",'UserController.dadosPaciente').middleware('auth:jwt');//mostrar lista de pacientes
 Route.get("/agendaCompleta",'UserController.agendaCompleta').middleware('auth:jwt'); //Mostra a agenda personalizada
 Route.get("/prontuario",'UserController.prontuarioCompleto').middleware('auth:jwt');// Prontuario

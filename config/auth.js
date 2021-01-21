@@ -27,13 +27,14 @@ module.exports = {
   | Session authentication is always persistent.
   |
   */
-  session: {
-    serializer: 'lucid',
-    model: 'App/Models/User',
-    scheme: 'session',
-    uid: 'email',
-    password: 'password'
-  },
+ session: {
+  serializer: 'LucidMongo',
+  model: 'App/Models/User',
+  scheme: 'session',
+  uid: 'email',
+  password: 'password'
+},
+
 
   /*
   |--------------------------------------------------------------------------
@@ -48,13 +49,14 @@ module.exports = {
   | login credentials on each request.
   |
   */
-  basic: {
-    serializer: 'lucid',
-    model: 'App/Models/User',
-    scheme: 'basic',
-    uid: 'email',
-    password: 'password'
-  },
+
+ basic: {
+  serializer: 'LucidMongo',
+  model: 'App/Models/User',
+  scheme: 'basic',
+  uid: 'email',
+  password: 'password'
+},
 
   /*
   |--------------------------------------------------------------------------
@@ -65,16 +67,18 @@ module.exports = {
   | via HTTP `Authorization` header.
   |
   */
- jwt: {
-  serializer: 'lucid',
-  model: 'App/Models/User',
-  scheme: 'jwt',
-  uid: 'cpfUser',
-  password: 'password',
-  options: {
-    secret: Env.get('APP_KEY')
-  }
-},
+  jwt: {
+    serializer: 'LucidMongo',
+    model: 'App/Models/User',
+    token: 'App/Models/Token',
+    scheme: 'jwt',
+    uid: 'cpfUser',
+    password: 'password',
+    expiry: '20m',
+    options: {
+      secret: Env.get('APP_KEY')
+    }
+  },
 
   /*
   |--------------------------------------------------------------------------
@@ -85,10 +89,12 @@ module.exports = {
   |
   */
   api: {
-    serializer: 'lucid',
-    model: 'App/Models/User',
+    serializer: 'LucidMongo',
     scheme: 'api',
-    uid: 'email',
-    password: 'password'
-  }
+    model: 'App/Models/User',
+    token: 'App/Models/Token',
+    uid: 'username',
+    password: '',
+    expiry: '30d',
+  },
 }

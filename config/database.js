@@ -18,50 +18,32 @@ module.exports = {
   | interacting with SQL databases.
   |
   */
-  connection: Env.get('DB_CONNECTION', 'pg'),
+  connection: Env.get('DB_CONNECTION', 'mongodb'),
 
-  /*
-  |--------------------------------------------------------------------------
-  | Sqlite
-  |--------------------------------------------------------------------------
-  |
-  | Sqlite is a flat file database and can be a good choice for a development
-  | environment.
-  |
-  | npm i --save sqlite3
-  |
-  */
-  sqlite: {
-    client: 'sqlite3',
+  mongodb: {
+    client: 'mongodb',
+    connectionString: Env.get('DB_CONNECTION_STRING', ''),
     connection: {
-      filename: Helpers.databasePath(`${Env.get('DB_DATABASE', 'development')}.sqlite`)
-    },
-    useNullAsDefault: true,
-    debug: Env.get('DB_DEBUG', false)
-  },
-
-  /*
-  |--------------------------------------------------------------------------
-  | MySQL
-  |--------------------------------------------------------------------------
-  |
-  | Here we define connection settings for MySQL database.
-  |
-  | npm i --save mysql
-  |
-  */
-  mysql: {
-    client: 'mysql',
-    connection: {
-      host: Env.get('DB_HOST', 'localhost'),
-      port: Env.get('DB_PORT', ''),
-      user: Env.get('DB_USER', 'root'),
-      password: Env.get('DB_PASSWORD', ''),
-      database: Env.get('DB_DATABASE', 'adonis')
-    },
-    debug: Env.get('DB_DEBUG', false)
-  },
-
+      host: Env.get('DB_HOST', DATABASE_URL.hostname),
+      port: Env.get('DB_PORT', DATABASE_URL.port),
+      username: Env.get('DB_USER', DATABASE_URL.username),
+      password: Env.get('DB_PASSWORD', DATABASE_URL.password),
+      database: Env.get('DB_DATABASE',  DATABASE_URL.pathname.substr(1)),
+      options: {
+        useUnifiedTopology: true,
+        useNewUrlParser:true
+        // replicaSet: Env.get('DB_REPLICA_SET', '')
+        // ssl: Env.get('DB_SSL, '')
+        // connectTimeoutMS: Env.get('DB_CONNECT_TIMEOUT_MS', 15000),
+        // socketTimeoutMS: Env.get('DB_SOCKET_TIMEOUT_MS', 180000),
+        // w: Env.get('DB_W, 0),
+        // readPreference: Env.get('DB_READ_PREFERENCE', 'secondary'),
+        // authSource: Env.get('DB_AUTH_SOURCE', ''),
+        // authMechanism: Env.get('DB_AUTH_MECHANISM', ''),
+        // other options
+      }
+    }
+  }
   /*
   |--------------------------------------------------------------------------
   | PostgreSQL
@@ -72,15 +54,17 @@ module.exports = {
   | npm i --save pg
   |
   */
- pg: {
-  client: 'pg',
-  connection: {
-    host: Env.get('DB_HOST', DATABASE_URL.hostname),
-    port: Env.get('DB_PORT', DATABASE_URL.port),
-    user: Env.get('DB_USER', DATABASE_URL.username),
-    password: Env.get('DB_PASSWORD', DATABASE_URL.password),
-    database: Env.get('DB_DATABASE', DATABASE_URL.pathname.substr(1))
-  },
-  debug: Env.get('DB_DEBUG', false)
-}
+  // pg: {
+  //   client: 'pg',
+  //   connection: {
+  //     host: Env.get('DB_HOST', DATABASE_URL.hostname),
+  //     port: Env.get('DB_PORT', DATABASE_URL.port),
+  //     user: Env.get('DB_USER', DATABASE_URL.username),
+  //     password: Env.get('DB_PASSWORD', DATABASE_URL.password),
+  //     database: Env.get('DB_DATABASE', DATABASE_URL.pathname.substr(1))
+  //   },
+  //   debug: Env.get('DB_DEBUG', false)
+  // },
+  
+
 }

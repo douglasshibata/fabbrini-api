@@ -1,14 +1,14 @@
 'use strict'
 
-/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
+/** @type {typeof import('lucid-mongo/src/LucidMongo/Model')} */
 const Model = use('Model')
 
 class Agenda extends Model {
    user(){
-       return this.belongsToMany('App/Models/User');
+       return this.embedsMany('App/Models/User');
    }
    prontuario(){
-       return this.hasOne('App/Models/Prontuario')
+       return this.morphOne('App/Models/Prontuario')
    }
 
 }
