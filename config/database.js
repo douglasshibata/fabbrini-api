@@ -18,11 +18,11 @@ module.exports = {
   | interacting with SQL databases.
   |
   */
-  connection: Env.get('DB_CONNECTION', 'mongodb'),
+  connection: Env.get('DB_CONNECTION_STRING', 'mongodb'),
 
   mongodb: {
     client: 'mongodb',
-    connectionString: Env.get('DB_CONNECTION_STRING',`${DATABASE_URL.hostname}://${DATABASE_URL.username}:${DATABASE_URL.password}@${DATABASE_URL.port}/${DATABASE_URL.pathname.substr(1)}?retryWrites=true&w=majority`),
+    connectionString: Env.get('DB_CONNECTION_STRING',DATABASE_URL),
     connection: {
       host: Env.get('DB_HOST', DATABASE_URL.hostname),
       port: Env.get('DB_PORT', DATABASE_URL.port),
