@@ -7,8 +7,7 @@ const Env = use('Env')
 const Helpers = use('Helpers');
 const Url = require('url-parse');
 const DATABASE_URL = new Url(Env.get('DATABASE_URL'));
-const MONGO_URL = new Url(Env.get('MONGO_URL'));
-
+const MONGO_URL = Env.get('MONGO_URL');
 module.exports = {
   /*
   |--------------------------------------------------------------------------
