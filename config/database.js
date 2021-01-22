@@ -22,7 +22,7 @@ module.exports = {
 
   mongodb: {
     client: 'mongodb',
-    connectionString: Env.get('DB_CONNECTION_STRING',MONGO_URL),
+    connectionString: Env.get('DB_CONNECTION_STRING',MONGO_URL,{useNewUrlParser:true,useUnifiedTopology:true}),
     connection: {
       host: Env.get('DB_HOST', DATABASE_URL.hostname),
       port: Env.get('DB_PORT', DATABASE_URL.port),
