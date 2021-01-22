@@ -7,7 +7,8 @@ const Env = use('Env')
 const Helpers = use('Helpers');
 const Url = require('url-parse');
 const DATABASE_URL = new Url(Env.get('DATABASE_URL'));
-const MONGO_URL = Env.get('MONGO_URL');
+const MONGO_URL = new Url(Env.get('MONGO_URL'));
+console.log(MONGO_URL);
 module.exports = {
   /*
   |--------------------------------------------------------------------------
@@ -18,18 +19,19 @@ module.exports = {
   | interacting with SQL databases.
   |
   */
-  connection: Env.get('DB_CONNECTION_STRING', 'mongodb'),
+  connection: Env.get('DB_CONNECTION', 'mongodb'),
 
   mongodb: {
     client: 'mongodb',
-    options:{useNewUrlParser:true,useUnifiedTopology:true},
     connectionString: Env.get('DB_CONNECTION_STRING',MONGO_URL),
     connection: {
-      host: Env.get('DB_HOST', DATABASE_URL.hostname),
-      port: Env.get('DB_PORT', DATABASE_URL.port),
-      username: Env.get('DB_USER', DATABASE_URL.username),
-      password: Env.get('DB_PASSWORD', DATABASE_URL.password),
-      database: Env.get('DB_DATABASE',  DATABASE_URL.pathname.substr(1)),
+      href: Env.get('DB_HREF',MONGO_URL.href),
+      // protocol:Env.get('DB_PROTOCOL',MONGO_URL.protocol),
+      // host: Env.get('DB_HOST', MONGO_URL.hostname),
+      // port: Env.get('DB_PORT', MONGO_URL.port),
+      // username: Env.get('DB_USER', MONGO_URL.username),
+      // password: Env.get('DB_PASSWORD', MONGO_URL.password),
+      // database: Env.get('DB_DATABASE',  MONGO_URL.pathname.substr(1)),
       options: {
         useUnifiedTopology: true,
         useNewUrlParser:true
