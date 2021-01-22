@@ -7,8 +7,8 @@ const Env = use('Env')
 const Helpers = use('Helpers');
 const Url = require('url-parse');
 const DATABASE_URL = new Url(Env.get('DATABASE_URL'));
-const MONGO_URL = new Url(Env.get('MONGO_URL'));
-console.log(MONGO_URL);
+const MONGO_URL = Env.get('MONGO_URL');
+
 module.exports = {
   /*
   |--------------------------------------------------------------------------
@@ -25,7 +25,8 @@ module.exports = {
     client: 'mongodb',
     connectionString: Env.get('DB_CONNECTION_STRING',MONGO_URL),
     connection: {
-      href: Env.get('DB_HREF',MONGO_URL.href),
+      href:  Env.get('DB_CONNECTION',MONGO_URL),
+      // href: Env.get('DB_HREF',MONGO_URL.href),
       // protocol:Env.get('DB_PROTOCOL',MONGO_URL.protocol),
       // host: Env.get('DB_HOST', MONGO_URL.hostname),
       // port: Env.get('DB_PORT', MONGO_URL.port),
