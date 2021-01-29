@@ -9,6 +9,7 @@ const Url = require('url-parse');
 // const DATABASE_URL = new Url(Env.get('DATABASE_URL'));
 const DATABASE_URL = new Url(Env.get('MONGO_URL'));
 const MONGO_URL =Env.get('MONGO_URL');
+// console.log(DATABASE_URL);
 module.exports = {
   /*
   |--------------------------------------------------------------------------
@@ -25,11 +26,12 @@ module.exports = {
     client: 'mongodb',
     connectionString: Env.get('DB_CONNECTION_STRING',MONGO_URL),
     connection: {
-      host: Env.get('DB_HOST', DATABASE_URL.hostname),
-      port: Env.get('DB_PORT', DATABASE_URL.port),
-      username: Env.get('DB_USER', DATABASE_URL.username),
-      password: Env.get('DB_PASSWORD', DATABASE_URL.password),
-      database: Env.get('DB_DATABASE',  DATABASE_URL.pathname.substr(1)),
+      // host: Env.get('DB_HOST', DATABASE_URL.hostname),
+      // port: Env.get('DB_PORT', DATABASE_URL.port),
+      // username: Env.get('DB_USER', DATABASE_URL.username),
+      // password: Env.get('DB_PASSWORD', DATABASE_URL.password),
+      // database: Env.get('DB_DATABASE',  DATABASE_URL.pathname.substr(1))
+      href:Env.get('DATABASE_URL',DATABASE_URL.href),
       options: {
         useUnifiedTopology: true,
         useNewUrlParser:true
