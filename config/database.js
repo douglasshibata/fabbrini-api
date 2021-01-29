@@ -23,7 +23,7 @@ module.exports = {
 
   mongodb: {
     client: 'mongodb',
-    connectionString: Env.get('DB_CONNECTION_STRING',MONGO_URL,{ useNewUrlParser: true }), // ,
+    connectionString: Env.get('DB_CONNECTION_STRING',MONGO_URL,{ useNewUrlParser: true,useUnifiedTopology: true  }), // ,
       options: {
         useUnifiedTopology: true,
         useNewUrlParser:true
