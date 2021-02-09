@@ -6,9 +6,8 @@ const Env = use('Env')
 /** @type {import('@adonisjs/ignitor/src/Helpers')} */
 const Helpers = use('Helpers');
 const Url = require('url-parse');
-// const DATABASE_URL = new Url(Env.get('DATABASE_URL'));
-const DATABASE_URL = new Url(Env.get('MONGO_URL'));
-const MONGO_URL =Env.get('MONGO_URL');
+ const DATABASE_URL = new Url(Env.get('DATABASE_URL'));
+
 module.exports = {
   /*
   |--------------------------------------------------------------------------
