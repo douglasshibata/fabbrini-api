@@ -153,6 +153,8 @@ class UserController {
   }
   async perfil({request}){
     const user =  await User.where('cpfUser', request.header('cpfUser')).fetch()
+
+    //const user =  await User.where('cpfUser', request.header('cpfUser')).fetch()
     //const user = await User.findByOrFail('cpfUser',request.header('cpfUser'))
     //.from('users').select('*').where('cpfUser',request.header('cpfUser'))
     return user

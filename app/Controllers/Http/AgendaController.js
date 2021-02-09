@@ -20,12 +20,12 @@ class AgendaController {
    * @param {View} ctx.view
    */
   async index({ request, response, view }) {
-    const user = await Agenda
-         .query().where(function(){this
-      .where('paciente_cpf',request.header('cpfPaciente'))
-      .orWhere('doctor_cpf',request.header('cpfDoctor'))
-    }).orderBy('horario').with('prontuario').fetch() 
-    return user
+    const agenda = await Agenda.all()
+    //      .query().where(function(){this
+    //   .where('paciente_cpf',request.header('cpfPaciente'))
+    //   .orWhere('doctor_cpf',request.header('cpfDoctor'))
+    // }).orderBy('horario').with('prontuario').fetch() 
+    return agenda
   }
 
   /**
