@@ -69,7 +69,7 @@ class UserController {
     }
   };
   async index() {
-    const user = User.all()
+    const user = await User.all()
 
     return user
   };
@@ -144,22 +144,23 @@ class UserController {
       return token;
   }
   async contadorPaciente(){
-    const contador = await  User.query().where('ehPaciente',true).getCount()
+    const contador = await  User.where('ehPaciente',true).count()
     return contador;
   }
   async contadorMedico(){
-    const contador = await User.query().where('ehMedico',true).getCount()
+    const contador = await User.where('ehMedico',true).count()
     return contador
   }
   async perfil({request}){
-    const user = await User.findByOrFail('cpfUser',request.header('cpfUser'))
+    const user =  await User.where('cpfUser', request.header('cpfUser')).fetch()
+    //const user = await User.findByOrFail('cpfUser',request.header('cpfUser'))
     //.from('users').select('*').where('cpfUser',request.header('cpfUser'))
     return user
   }
-  async dadosPaciente(){
-    const dados = await Database.select('*').from('users');
-    return dados;
-  }
+  // async dadosPaciente(){
+  //   const dados = await User.all()//.select('*').from('users');
+  //   return dados;
+  // }
   async agendaCompleta({request}){
     const user = await User.findByOrFail('cpfUser',request.header('cpfUser'))
     if(user.ehMedico){
