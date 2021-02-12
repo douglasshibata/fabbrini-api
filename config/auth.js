@@ -18,46 +18,9 @@ module.exports = {
   */
   authenticator: 'jwt',
 
-  /*
-  |--------------------------------------------------------------------------
-  | Session
-  |--------------------------------------------------------------------------
-  |
-  | Session authenticator makes use of sessions to authenticate a user.
-  | Session authentication is always persistent.
-  |
-  */
- session: {
-  serializer: 'LucidMongo',
-  model: 'App/Models/User',
-  scheme: 'session',
-  uid: 'email',
-  password: 'password'
-},
+  
 
-
-  /*
-  |--------------------------------------------------------------------------
-  | Basic Auth
-  |--------------------------------------------------------------------------
-  |
-  | The basic auth authenticator uses basic auth header to authenticate a
-  | user.
-  |
-  | NOTE:
-  | This scheme is not persistent and users are supposed to pass
-  | login credentials on each request.
-  |
-  */
-
- basic: {
-  serializer: 'LucidMongo',
-  model: 'App/Models/User',
-  scheme: 'basic',
-  uid: 'email',
-  password: 'password'
-},
-
+  
   /*
   |--------------------------------------------------------------------------
   | Jwt
@@ -72,11 +35,12 @@ module.exports = {
     model: 'App/Models/User',
     token: 'App/Models/Token',
     scheme: 'jwt',
-    uid: 'cpfUser',
-    password: 'password',
-    expiry: '20m',
+    uid: 'cpfNumber',
+    password: 'senha',
     options: {
-      secret: Env.get('APP_KEY')
+      secret: Env.get('APP_KEY'),
+      expiresIn: '10800000' //3 horas
+     // expiresIn: '60000' //1 minuto
     }
   },
 
@@ -93,8 +57,8 @@ module.exports = {
     scheme: 'api',
     model: 'App/Models/User',
     token: 'App/Models/Token',
-    uid: 'username',
-    password: '',
+    uid: 'cpfNumber',
+    password: 'senha',
     expiry: '30d',
   },
 }
