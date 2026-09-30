@@ -3,7 +3,6 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
-
 /** @type {import('@adonisjs/framework/src/Hash')} */
 const Hash = use('Hash')
 
@@ -22,21 +21,23 @@ class User extends Model {
     })
   }
 
+  static get hidden () {
+    return ['password']
+  }
+
   /**
-   * A relationship on tokens is required for auth to
-   * work. Since features like `refreshTokens` or
-   * `rememberToken` will be saved inside the
-   * tokens table.
-   *
-   * @method tokens
-   *
-   * @return {Object}
+   * Relationship with tokens
    */
   tokens () {
-    return this.morphMany('App/Models/Token','user_id','cpfUser')
+    return this.hasMany('App/Models/Token', 'user_id', 'cpfUser')
   }
-  agenda(){
-    return this.morphMany('App/Models/Agenda')
+
+  agendaDoctor () {
+    return this.hasMany('App/Models/Agenda', 'doctor_cpf', 'cpfUser')
+  }
+
+  agendaPaciente () {
+    return this.hasMany('App/Models/Agenda', 'paciente_cpf', 'cpfUser')
   }
 }
 

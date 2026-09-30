@@ -4,13 +4,21 @@
 const Model = use('Model')
 
 class Agenda extends Model {
-   user(){
-       return this.embedsMany('App/Models/User');
-   }
-   prontuario(){
-       return this.morphOne('App/Models/Prontuario')
-   }
+  static get table () {
+    return 'agenda'
+  }
 
+  doctor () {
+    return this.belongsTo('App/Models/User', 'doctor_cpf', 'cpfUser')
+  }
+
+  paciente () {
+    return this.belongsTo('App/Models/User', 'paciente_cpf', 'cpfUser')
+  }
+
+  prontuario () {
+    return this.hasOne('App/Models/Prontuario', 'agenda_id', 'id')
+  }
 }
 
 module.exports = Agenda

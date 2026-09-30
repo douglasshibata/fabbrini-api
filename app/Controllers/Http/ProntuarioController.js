@@ -14,43 +14,50 @@ class ProntuarioController {
   /**
    * Show a list of all prontuarios.
    * GET prontuarios
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async index({ request, response, view }) {
+  async index ({ response, auth }) {
+    if (!auth.user.ehMedico) {
+      return response.status(403).send({ message: { error: 'Apenas médicos podem listar prontuários' } })
+    }
     const prontuario = await Prontuario.all()
-    return prontuario;
+    return prontuario
   }
 
   /**
    * Create/save a new prontuario.
-   * POST prontuarios
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
+   * POST agenda/:id/prontuario
    */
-  async store({ request, response, params }) {
-    const agenda = await Agenda.findOrFail(params.id);
-    const texto = request.only(['prontuario', 'agenda_id']);
-    const res = await agenda.prontuario().create(texto);
-    return res;
+  async store ({ request, response, params, auth }) {
+    if (!auth.user.ehMedico) {
+      return response.status(403).send({ message: { error: 'Apenas médicos podem criar prontuários' } })
+    }
+
+    const agenda = await Agenda.findOrFail(params.id)
+
+    if (agenda.doctor_cpf !== auth.user.cpfUser) {
+      return response.status(403).send({ message: { error: 'Você não é o médico desta consulta' } })
+    }
+
+    const texto = request.only(['prontuario'])
+    const res = await agenda.prontuario().create({
+      prontuario: texto.prontuario,
+      agenda_id: agenda.id
+    })
+
+    return response.status(201).json(res)
   }
 
   /**
    * Display a single prontuario.
    * GET prontuarios/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {
-    const agenda = await Agenda.findOrFail(params.id);
+  async show ({ params, response, auth }) {
+    const agenda = await Agenda.findOrFail(params.id)
+
+    if (auth.user.cpfUser !== agenda.doctor_cpf && auth.user.cpfUser !== agenda.paciente_cpf) {
+      return response.status(403).send({ message: { error: 'Não autorizado a visualizar este prontuário' } })
+    }
+
     await agenda.load('prontuario')
     return agenda
   }
@@ -58,28 +65,46 @@ class ProntuarioController {
   /**
    * Update prontuario details.
    * PUT or PATCH prontuarios/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {
-    const agenda = await Agenda.findOrFail(params.id);
-    const texto = request.only(['prontuario', 'agenda_id']);
-    await agenda.merge(texto)
-    await agenda.save()
-    return agenda
+  async update ({ params, request, response, auth }) {
+    if (!auth.user.ehMedico) {
+      return response.status(403).send({ message: { error: 'Apenas médicos podem editar prontuários' } })
+    }
+
+    const agenda = await Agenda.findOrFail(params.id)
+
+    if (agenda.doctor_cpf !== auth.user.cpfUser) {
+      return response.status(403).send({ message: { error: 'Você não é o médico desta consulta' } })
+    }
+
+    const prontuario = await Prontuario.findByOrFail('agenda_id', agenda.id)
+    const texto = request.only(['prontuario'])
+
+    prontuario.merge(texto)
+    await prontuario.save()
+
+    return prontuario
   }
 
   /**
    * Delete a prontuario with id.
    * DELETE prontuarios/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
    */
-  async destroy({ params, request, response }) {
+  async destroy ({ params, response, auth }) {
+    if (!auth.user.ehMedico) {
+      return response.status(403).send({ message: { error: 'Apenas médicos podem deletar prontuários' } })
+    }
+
+    const agenda = await Agenda.findOrFail(params.id)
+
+    if (agenda.doctor_cpf !== auth.user.cpfUser) {
+      return response.status(403).send({ message: { error: 'Você não é o médico desta consulta' } })
+    }
+
+    const prontuario = await Prontuario.findByOrFail('agenda_id', agenda.id)
+    await prontuario.delete()
+
+    return response.status(200).send({ message: 'Prontuário removido' })
   }
 }
 
